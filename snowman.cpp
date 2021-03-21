@@ -125,7 +125,7 @@ string make_body(string x)
         break;
     case '2':
         u_body[nose_pos] = '.';
-     
+        break;
     case '3':
         u_body[nose_pos] = '_' ;  
         break;
@@ -293,6 +293,6 @@ string snowman(int x)
  };
 // int main()
 // {
-//     ariel::snowman(34123412);
+//     ariel::snowman(12143313);
 //     return 0;
 // }
