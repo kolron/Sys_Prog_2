@@ -1,67 +1,93 @@
+#include "Board.hpp"
+#include "Direction.hpp"
 #include "doctest.h"
-#include "snowman.hpp"
-#include <string>
 #include <algorithm>
-using namespace ariel;
 using namespace std;
+using ariel::Direction;
 
-string nospace(string input)
+ariel::Board board;
+
+//testing if posting doesn't fail the program
+TEST_CASE("Posting all")
 {
-    std::erase(input, ' ');
-    std::erase(input, '\t');
-    std::erase(input, '\n');
-    std::erase(input, '\r');
-    return input;
-    
+    for(int i = 32; i < 254; i++)
+    {
+        
+
+        board.post((unsigned int) (i/40)%10, (unsigned int)i-32, Direction::Horizontal,std::string(1,(char)i));
+        CHECK(board.read((unsigned int)i/40,(unsigned int)i-32,Direction::Horizontal,1) == std::string(1,(char)i));
+       
+    } 
 }
 
-TEST_CASE("Good snowman code")
- {
-    //given CHECK, might as well
-    CHECK(nospace(snowman(11114411)) == nospace(string("      \n _===_\n (.,.) \n ( : ) \n ( : )\n")));
-    //Checking Arms 
-    CHECK(nospace(snowman(44444444)) == nospace(string("  ___ \n (_*_)\n (- -) \n (   ) \n (   )\n")));//no arms 
-    CHECK(nospace(snowman(32224432)) == nospace(string("   _  \n  /_\\ \n (o_o) \n (> <) \n (\" \")\n"))); // 2 leveled hat no arms
-    CHECK(nospace(snowman(22114312)) == nospace(string("  ___ \n .....\n (._.) \n ( : )\\\n (\" \")\n"))); //no left arm 
-    CHECK(nospace(snowman(43212432)) == nospace(string("  ___ \n (_*_)\n\\(o_.) \n (> <) \n (\" \")\n"))); //no right arm 
-    CHECK(nospace(snowman(21342231)) == nospace(string("  ___ \n .....\n\\(O,-)/\n (> <) \n ( : )\n"))); //2 upwards arm
-    CHECK(nospace(snowman(41322422)) == nospace(string("  ___ \n (_*_)\n\\(O,o) \n (] [) \n (\" \")\n"))); // left upwards
-    CHECK(nospace(snowman(33144243)) == nospace(string("   _  \n  /_\\ \n (._-)/\n (   ) \n (___)\n"))); //right upwards
-    //Checking Eyes 
-    CHECK(nospace(snowman(43114411)) == nospace(string("  ___ \n (_*_)\n (._.) \n ( : ) \n ( : )\n")));
-    CHECK(nospace(snowman(43224411)) == nospace(string("  ___ \n (_*_)\n (o_o) \n ( : ) \n ( : )\n")));
-    CHECK(nospace(snowman(43334411)) == nospace(string("  ___ \n (_*_)\n (O_O) \n ( : ) \n ( : )\n")));
-    CHECK(nospace(snowman(43444411)) == nospace(string("  ___ \n (_*_)\n (-_-) \n ( : ) \n ( : )\n")));
-    //Checking Hat and Nose
-    CHECK(nospace(snowman(41341242)) == nospace(string("  ___ \n (_*_)\n (O,-)/\n<(   ) \n (\" \")\n")));
-    CHECK(nospace(snowman(32341242)) == nospace(string("   _  \n  /_\\ \n (O_-)/\n<(   ) \n (\" \")\n")));
-    CHECK(nospace(snowman(23341242)) == nospace(string("  ___ \n .....\n (O_-)/\n<(   ) \n (\" \")\n")));
-    CHECK(nospace(snowman(14341242)) == nospace(string("      \n _===_\n (O -)/\n<(   ) \n  (\" \")\n")));
-    //Checking Torso and Base
-    CHECK(nospace(snowman(31432241)) == nospace(string("   _  \n  /_\\ \n\\(-,O)/\n (   ) \n ( : )\n")));
-    CHECK(nospace(snowman(31432232)) == nospace(string("   _  \n  /_\\ \n\\(-,O)/\n (> <) \n (\" \")\n")));
-    CHECK(nospace(snowman(31432223)) == nospace(string("   _  \n  /_\\ \n\\(-,O)/\n (] [) \n (___)\n")));
-    CHECK(nospace(snowman(31432214)) == nospace(string("   _  \n  /_\\ \n\\(-,O)/\n ( : ) \n (   )\n")));
+ariel::Board board2;
+TEST_CASE("Posting & Reading Horizontal")
+{
+    board2.post(50,50,Direction::Horizontal, "abcd");
     
-    //Making sure each option has 1 2 3 4 to make sure they're all working.
-    CHECK(nospace(snowman(12341234)) == nospace(string("      \n _===_\n (O_-)/\n<(> <) \n (   )\n")));
-    CHECK(nospace(snowman(23412341)) == nospace(string("  ___ \n .....\n\\(-_.) \n (   )\\\n ( : )\n")));
-    CHECK(nospace(snowman(34123412)) == nospace(string("   _  \n  /_\\ \n (. o) \n/( : ) \n (\" \")\n")));
-    CHECK(nospace(snowman(41234123)) == nospace(string("  ___ \n (_*_)\n (o,O) \n (] [)>\n (___)\n")));
+    CHECK(board2.read(50,50,Direction::Horizontal, 4) == "abcd"); //regular
+    CHECK(board2.read(50,50,Direction::Horizontal, 5) == "abcd_");//reading 1 forward
+    CHECK(board2.read(50,49,Direction::Horizontal, 5) == "_abcd"); //reading 1 backwards
+    CHECK(board2.read(50,49,Direction::Horizontal, 6) == "_abcd_"); //both
+    
+    board2.post(0,0,Direction::Horizontal, "1");//posting and reading a digit
+    CHECK(board2.read(0,0,Direction::Horizontal, 1) == "1");
+
+    CHECK(board2.read(30,27, Direction::Horizontal, 4) == "____");//posting and reading from an empty space
+    CHECK(board2.read(1,1,Direction::Horizontal, 1) == "_");
+    CHECK(board2.read(102,100,Direction::Horizontal, 3) == "___");
+}
+
+ ariel::Board board3;
+
+ TEST_CASE("Posting & Reading Vertical")
+{
+    board3.post(50,50,Direction::Horizontal, "abcd");
+    CHECK(board3.read(50,50,Direction::Horizontal, 4) == "abcd"); //regular
+    CHECK(board3.read(50,50,Direction::Horizontal, 5) == "abcd_");//reading 1 forward
+    CHECK(board3.read(50,49,Direction::Horizontal, 5) == "_abcd"); //reading 1 backwards
+    CHECK(board3.read(50,49,Direction::Horizontal, 6) == "_abcd_"); //both
+    board3.post(0,0,Direction::Horizontal, "1");//posting and reading a digit
+    CHECK(board3.read(0,0,Direction::Horizontal, 1) == "1");
+    CHECK(board3.read(30,27, Direction::Horizontal, 4) == "____");//posting and reading from an empty space
+    CHECK(board3.read(1,1,Direction::Horizontal, 1) == "_");
+    CHECK(board3.read(102,100,Direction::Horizontal, 3) == "___");
+}
+
+
+
+ariel::Board board4;
+
+TEST_CASE("Overwriting")
+{
+    board4.post(100,100,Direction::Horizontal, "abcd");
+    board4.post(100,101,Direction::Horizontal,"abcd");
+    CHECK(board4.read(100,100,Direction::Horizontal, 6) == "aabcd_");
+
+    board4.post(99,100,Direction::Vertical,"abcd");
+    CHECK(board4.read(100,100,Direction::Horizontal, 6) == "babcd_");
+
+    board4.post(100,102,Direction::Horizontal,"cdba");
    
+    CHECK(board4.read(100,100,Direction::Horizontal, 6) == "bacdba");
+    board4.post(100,101,Direction::Vertical,"abcd");
+
+   CHECK(board4.read(101,100,Direction::Horizontal, 4) == "cb__");
+    
+    board4.post(98,102,Direction::Vertical,"ABCD");
+    CHECK(board4.read(98,102,Direction::Vertical, 6) == "ABCD__");
+    
+    board4.post(97,104,Direction::Vertical,"abcd");
+  
+
  }
-TEST_CASE("Bad snowman code") {
-    CHECK_THROWS(snowman(555)); // too little digits
-    CHECK_THROWS(snowman(112232443)); //too many digits
-    CHECK_THROWS(snowman(14444444+1)); //digits over 4
-    CHECK_THROWS(snowman(13214259)); //digits over 4
-    CHECK_THROWS(snowman(13214250)); //digits less than 1
-    //same but negative
-    CHECK_THROWS(snowman(-555)); // too little digits
-    CHECK_THROWS(snowman(-112232443)); //too many digits
-    CHECK_THROWS(snowman(-14444444+1)); //digits over 4
-    CHECK_THROWS(snowman(-13214259)); //digits over 4
-    CHECK_THROWS(snowman(-13214250)); //digits less than 1
 
-}
+// ariel::Board board5;
 
+// TEST_CASE("Bad posting")
+// {
+//      board5.post(50,50,Direction::Horizontal, "abcd");
+//     CHECK(board5.read(50,50,Direction::Horizontal, 6) == "abcd__ ");
+//     CHECK(board5.read(50,50,Direction::Horizontal, 6) == "abcd__");
+//     CHECK(board5.read(50,50,Direction::Horizontal, 6) == "abcd__");
+// }
