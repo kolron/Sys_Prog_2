@@ -10,14 +10,16 @@ ariel::Board board;
 //testing if posting doesn't fail the program
 TEST_CASE("Posting all")
 {
+    unsigned int t =0 ;
     for(int i = 32; i < 254; i++)
     {
         
-
-        board.post((unsigned int) (i/40)%10, (unsigned int)i-32, Direction::Horizontal,std::string(1,(char)i));
-        CHECK(board.read((unsigned int)i/40,(unsigned int)i-32,Direction::Horizontal,1) == std::string(1,(char)i));
+        
+        board.post((unsigned int) (i/40)%10, (unsigned int)(i-32)%40, Direction::Horizontal,std::string(1,(char)i));
+        CHECK(board.read((unsigned int)i/40,(unsigned int)(i-32)%40,Direction::Horizontal,1) == std::string(1,(char)i));
        
     } 
+   
 }
 
 ariel::Board board2;
