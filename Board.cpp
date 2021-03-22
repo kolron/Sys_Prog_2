@@ -113,7 +113,7 @@ namespace ariel
         if(flag_written)
         {
         unsigned int actualHeight = rowEdge - firstRow+1;
-        cout<<firstRow<< endl; // bug this needs to be 99
+      
         unsigned int actualWidth = colEdge - firstCol+1; 
         unsigned int rowNum = firstRow-1;
         for (unsigned int i = 0; i < actualHeight; i++)
