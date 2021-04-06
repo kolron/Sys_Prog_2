@@ -19,5 +19,9 @@ namespace ariel
             void show();
             void post(unsigned int row, unsigned int col, ariel::Direction direction, std::string msg);
             std::string read(unsigned int row, unsigned int col, Direction direction, unsigned int len);
+             unsigned int  rec_row();
+             unsigned int  rec_col();
+            static char check_direction(char c);
+
     };
 }
