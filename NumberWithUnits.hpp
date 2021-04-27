@@ -16,6 +16,7 @@ namespace ariel
            
             bool checkMatch(const NumberWithUnits &other) const;    //(X)                                                    
             double convertType(const std::string &newType) const;   //(X)
+            static void fillTable(const std::string& base, const std::string& rate);
            
 
         public:
@@ -30,9 +31,9 @@ namespace ariel
             this->value=v;} 
             //constructor //(X)
             static void read_units(std::ifstream &file); //instruction reader. //(X)
+         
             double getValue(); //(X)
-            std::string getType();//(X)
-
+            std::string getType();//(X/)
 
             //OPERATOR OVERLOAD
             //PLUS(+) OPERATORS
@@ -65,7 +66,7 @@ namespace ariel
 
             //OSTREAM AND ISTREAM
             friend std::ostream &operator<<(std::ostream &os, const NumberWithUnits &out);
-          //  friend std::istream &operator>>(std::istream &is, const NumberWithUnits &in);
+            friend std::istream &operator>>(std::istream &is, NumberWithUnits &other);
 
             
     };
