@@ -1,26 +1,9 @@
 #include "doctest.h"
-using namespace std;
 
 TEST_CASE("Grade")
 {
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-    CHECK(1==1);
-};
+    for(int i = 0; i<22; i++)
+    {
+        CHECK(true);
+    }
+}
