@@ -19,10 +19,10 @@ namespace ariel
                root = nullptr;
             }
 
-            // BinaryTree(Node<T>* root)
-            // {
-            //     this -> root = root;
-            // }
+            BinaryTree(Node<T>* root)
+            {
+                this -> root = root;
+            }
 
             BinaryTree &add_root(T data)
             {
@@ -129,15 +129,9 @@ namespace ariel
     };
     template<typename T> std::ostream &operator<<(std::ostream &os, BinaryTree<T>& tree)
     {
-    //     std::for_each(tree.begin(), tree.end(),   [](const auto element) { std::cout << " " << element;});
-    //     os<<std::endl;
-    //     return os;
-    // }
-     for (auto element : tree)
-        {
-            os << element << " ";
-        }
-        os << std::endl;
-        return os;
-    }
+         std::for_each(tree.begin(), tree.end(),   [](const auto element) { std::cout << " " << element;});
+         os<<std::endl;
+         return os;
+     }
+    
 };
