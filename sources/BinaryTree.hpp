@@ -25,7 +25,7 @@ namespace ariel
             }
         }
 
-        BinaryTree(BinaryTree &&other) noexcept //shallow copy - just change the root of the new tree to be the same as the old tree. 
+        BinaryTree(BinaryTree &&other) noexcept  //shallow copy - just change the root of the new tree to be the same as the old tree. 
         {                              //We don't want 2 roots to the same tree (or another place to access the tree) so make the old root point null
             root = other.root;
             other.root = nullptr;
@@ -74,7 +74,7 @@ namespace ariel
             return *this;
         }
 
-        BinaryTree &operator=(BinaryTree &&other) 
+        BinaryTree &operator=(BinaryTree &&other) noexcept
         {
             root = other.root;
             other.root = nullptr;
