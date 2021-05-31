@@ -5,60 +5,64 @@
 
 namespace ariel
 {
-    
     template <typename T> class InIterator
     {
     public:
-        InIterator(){};   
-
-        InIterator(Node<T> *root) 
+    
+        InIterator(){};           
+        InIterator(Node<T> *node) 
         {
-            while(root != nullptr)
+            while (node)
             {
-                stack.push(root);
-                root = root->left;
+                stack.push(node);
+                node = node->left;
             }
         };
-
         InIterator<T> &operator++()
         {
-
-            Node<T> *first = stack.top()->right;
+            Node<T> *curr = stack.top()->right;
             stack.pop();
-
-            while(first != nullptr)
+            while (curr)
             {
-                stack.push(first);
-                first = first->left;
+                stack.push(curr);
+                curr = curr->left;
             }
-            
             return *this;
+        }
+        InIterator<T> operator++(int)
+        {
+            InIterator<T> temp = *this;
+            Node<T> *curr = stack.top()->right;
+            stack.pop();
+            while (curr)
+            {
+                stack.push(curr);
+                curr = curr->left;
+            }
+            return temp;
         }
         T &operator*()
         {
             return stack.top()->data;
         }
-
-        
         T *operator->()
         {
-            //Node<T> *node = stack.top();
             return &(stack.top()->data);
         }
-
-
-
         bool operator!=(const InIterator &other) const
         {
             return other.stack.empty() != stack.empty() ||
                    (!stack.empty() && other.stack.top() != stack.top());
         }
-
-
+        bool operator==(const InIterator &other) const
+        {
+            return !(*this != other);
+        }
         Node<T> *getNode() 
         {
             return stack.top();
         }
+
 
     private:
         std::stack<Node<T> *> stack;

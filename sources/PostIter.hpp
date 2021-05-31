@@ -1,56 +1,62 @@
 #pragma once
 #include "Node.hpp"
-#include <stack>
-
+#include <list>
 namespace ariel
 {
-    
     template <typename T> class PostIterator
     {
     public:
-        PostIterator(){};   
-
-        PostIterator(Node<T> *root) 
+        PostIterator(){};
+        PostIterator(Node<T> *node)
         {
-            postorder(root);
+            postorder(node);
         };
-
         PostIterator<T> &operator++()
         {
-            stack.pop();
+            stack.pop_front();
             return *this;
-            
+        }
+        PostIterator<T> operator++(int)
+        {
+            PostIterator<T> ret = *this;
+            stack.pop_front();
+            return ret;
         }
         T &operator*()
         {
-            return stack.top()->data;
+            return stack.front()->data;
         }
-
-
         T *operator->()
         {
-            //Node<T> * node = stack.top();
-            return &(stack.top()->data);
+            return &(stack.front()->data);
         }
-
-
-
+        bool operator==(const PostIterator &other) const
+        {
+            return !(other.stack.empty() != stack.empty() ||(!stack.empty() && other.stack.front() != stack.front()));
+        }
         bool operator!=(const PostIterator &other) const
         {
-            return other.stack.empty() != stack.empty() ||
-                   (!stack.empty() && other.stack.top() != stack.top());
+            return !(*this == other);
         }
-
-
+        
         Node<T> *getNode() 
         {
             return stack.top();
         }
 
     private:
-        std::stack<Node<T>*> stack;
+        std::list<Node<T>*> stack;
 
         //Recursive function for constructor 
+        //started with a 2 stack implementation before realizing we can just do push_back using a list
+
+        //  while(!stackHelp.empty())
+        //             {
+        //                 Node<T>* node = stackHelp.top();
+        //                 stackHelp.pop();
+        //                 stackMain.push(node);  
+        //             }
+        
         //https://www.tutorialspoint.com/cplusplus-program-to-perform-postorder-recursive-traversal-of-a-given-binary-tree
 
         void postorder(Node<T> *root)
@@ -65,7 +71,7 @@ namespace ariel
                 {
                     postorder(root->right);
                 }
-                stack.push(root);
+                stack.push_back(root);
             }
         }
     };
